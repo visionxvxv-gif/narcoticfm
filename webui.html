@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narcotic - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #121519;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+        }
+        .sidebar {
+            width: 240px;
+            background: #1a1a1a;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+        }
+        .sidebar-header {
+            padding: 0 20px 20px;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+        .sidebar-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            justify-content: center;
+        }
+        .sidebar-footer {
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #888;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .social-icon:hover {
+            color: #0000A3;
+            border-color: #0000A3;
+            transform: scale(1.05);
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            cursor: pointer;
+            color: #888;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+            margin: 0 8px;
+            border: 1px solid #333;
+            background: #2a2a2a;
+            animation: slideIn 0.3s ease-out both;
+        }
+        .menu-item:nth-child(1) { animation-delay: 0.05s; }
+        .menu-item:nth-child(2) { animation-delay: 0.1s; }
+        .menu-item:nth-child(3) { animation-delay: 0.15s; }
+        .menu-item:nth-child(4) { animation-delay: 0.2s; }
+        .menu-item:nth-child(5) { animation-delay: 0.25s; }
+        .menu-item:nth-child(6) { animation-delay: 0.3s; }
+        .menu-item:nth-child(7) { animation-delay: 0.35s; }
+        .menu-item:hover {
+            color: #fff;
+            background: #0000A3;
+            border-color: #0000A3;
+            transform: translateX(4px);
+        }
+        .menu-item.active {
+            color: #fff;
+            background: #0000A3;
+            border-color: #0000A3;
+            transform: scale(1.02);
+        }
+        .menu-item i {
+            width: 20px;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        .content {
+            flex: 1;
+            padding: 40px;
+        }
+        .content-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .content-header {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 0;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 10px 16px;
+            gap: 10px;
+            width: 250px;
+        }
+        .search-bar i {
+            color: #888;
+            font-size: 14px;
+        }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 13px;
+            width: 100%;
+        }
+        .search-bar input::placeholder {
+            color: #666;
+        }
+        .content-subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 24px;
+            animation: fadeIn 0.4s ease-out 0.1s both;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+        .control-section {
+            display: block;
+        }
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .sections-grid.three-columns {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .section-box {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 12px 16px;
+            border: 1px solid #2a2a2a;
+        }
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 6px 0;
+            gap: 12px;
+        }
+        .control-row label {
+            font-size: 14px;
+            color: #aaa;
+            font-weight: 500;
+            min-width: 100px;
+        }
+        .control-row input[type="color"] {
+            margin-left: auto;
+        }
+        .control-row.has-slider {
+            justify-content: flex-start;
+            gap: 12px;
+        }
+        .control-row.has-slider label {
+            flex: 1;
+        }
+        .control-row.has-slider .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .control-row input[type="checkbox"] {
+            appearance: none;
+            width: 40px;
+            height: 20px;
+            cursor: pointer;
+            background: #2a2a2a;
+            border-radius: 10px;
+            position: relative;
+            transition: background 0.2s ease;
+        }
+        .control-row input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s ease;
+        }
+        .control-row input[type="checkbox"]:checked {
+            background: #0000A3;
+        }
+        .control-row input[type="checkbox"]:checked::before {
+            transform: translateX(20px);
+        }
+        .control-row select {
+            padding: 10px 12px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            width: 140px;
+            font-weight: 500;
+        }
+        .control-row select:hover {
+            border-color: #0000A3;
+            background: #3a3a3a;
+        }
+        .control-row select:focus {
+            border-color: #0000A3;
+            outline: none;
+        }
+        .control-row select option { 
+            background: #121519; 
+            color: #fff; 
+            padding: 10px 15px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .control-row select option:checked {
+            background: #0000A3;
+            color: #fff;
+        }
+        .control-row input[type="range"] {
+            appearance: none;
+            width: 220px;
+            height: 8px;
+            cursor: pointer;
+            background: linear-gradient(to right, #0000A3 0%, #2a2a2a 0%);
+            border-radius: 4px;
+            outline: none;
+        }
+        .control-row input[type="range"].long-slider {
+            width: 180px;
+        }
+        .control-row input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #0000A3;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .control-row input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        .control-row input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #0000A3;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .value-display {
+            min-width: 30px;
+            padding: 4px 8px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            text-align: center;
+            color: #888;
+            font-weight: 600;
+            font-size: 12px;
+            appearance: none;
+            outline: none;
+        }
+        .value-display:focus {
+            border-color: #0000A3;
+            color: #fff;
+        }
+        .value-display::-webkit-inner-spin-button,
+        .value-display::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+        .keybind {
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            user-select: none;
+            width: 120px;
+            min-width: 120px;
+            min-height: 36px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .keybind:hover { 
+            border-color: #0000A3;
+            background: #3a3a3a;
+        }
+        .keybind.recording {
+            border-color: #0000A3;
+            color: #fff;
+            background: #0000A3;
+            animation: pulse 1s infinite;
+        }
+        .keybind.recording::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        .triggerbot-preview {
+            width: 100%;
+            height: 200px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            margin-top: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .triggerbot-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .control-row input[type="color"] {
+            appearance: none;
+            width: 50px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: none;
+        }
+        .control-row input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        .control-row input[type="color"]::-webkit-color-swatch {
+            border: 1px solid #333;
+            border-radius: 4px;
+        }
+        .preview-image-container {
+            width: 100%;
+            height: 700px;
+            margin-top: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #2a2a2a;
+            position: relative;
+        }
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+        .skeleton-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: auto;
+        }
+        .player-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .player-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: #2a2a2a;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .player-item:hover {
+            background: #3a3a3a;
+        }
+        .player-item.selected {
+            background: #0000A3;
+            border-color: #000086;
+        }
+        .player-item.selected .player-name {
+            color: #fff;
+        }
+        .player-item.selected .player-id {
+            color: #aaa;
+        }
+        .player-name {
+            font-size: 13px;
+            color: #fff;
+            font-weight: 500;
+        }
+        .player-id {
+            font-size: 12px;
+            color: #888;
+        }
+        .option-button {
+            width: 100%;
+            padding: 10px 14px;
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .option-button:hover {
+            background: #3a3a3a;
+            border-color: #4a4a4a;
+        }
+        .option-button:active {
+            background: #252525;
+            border-color: #353535;
+        }
+        .config-input {
+            width: 100%;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .config-input:focus {
+            border-color: #0000A3;
+        }
+        .config-input::placeholder {
+            color: #666;
+        }
+        .config-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .config-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: #2a2a2a;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .config-item:hover {
+            background: #3a3a3a;
+        }
+        .config-item.selected {
+            background: #0000A3;
+            border-color: #000086;
+        }
+        .config-item .config-name {
+            font-size: 13px;
+            color: #fff;
+            font-weight: 500;
+        }
+        .keybind-box {
+            min-width: 120px;
+            min-height: 36px;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .keybind-box:hover {
+            background: #3a3a3a;
+            border-color: #0000A3;
+        }
+        .keybind-box.recording {
+            background: #0000A3;
+            border-color: #0000A3;
+        }
+        .easing-graph {
+            display: block;
+            margin-top: 16px;
+            padding: 16px;
+            background: #121519;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .easing-title {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .easing-styles {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .easing-option {
+            padding: 8px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 11px;
+            color: #aaa;
+            transition: all 0.2s ease;
+        }
+        .easing-option.selected {
+            background: #0000A3;
+            border-color: #0000A3;
+            color: #fff;
+        }
+        .easing-preview {
+            width: 100%;
+            height: 250px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            margin-top: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .easing-canvas {
+            width: 100%;
+            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
+        }
+        .easing-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .easing-grid-line {
+            stroke: #333;
+            stroke-width: 1;
+        }
+        .section-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #aaa;
+            margin: 0 0 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section-header:first-child {
+            margin-top: 0;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">NARCOTIC</div>
+        <div class="sidebar-menu">
+            <div class="menu-item active" data-tab="aimbot">
+                <i class="fa-solid fa-crosshairs"></i>
+                <span>Aimbot</span>
+            </div>
+            <div class="menu-item" data-tab="triggerbot">
+                <i class="fa-solid fa-bullseye"></i>
+                <span>Triggerbot</span>
+            </div>
+            <div class="menu-item" data-tab="player-esp">
+                <i class="fa-solid fa-eye"></i>
+                <span>ESP</span>
+            </div>
+            <div class="menu-item" data-tab="player-list">
+                <i class="fa-solid fa-list"></i>
+                <span>Player List</span>
+            </div>
+            <div class="menu-item" data-tab="misc">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Misc</span>
+            </div>
+            <div class="menu-item" data-tab="configs">
+                <i class="fa-solid fa-gear"></i>
+                <span>Configs</span>
+            </div>
+            <div class="menu-item" data-tab="interface">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Interface</span>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <i class="fa-brands fa-discord social-icon"></i>
+            <i class="fa-brands fa-telegram social-icon"></i>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content-header-row">
+            <div class="content-header">NARCOTIC</div>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search settings..." id="search-input">
+            </div>
+        </div>
+        <div class="tab-content active" id="aimbot">
+            <div class="content-header">Aimbot</div>
+            <div class="content-subtitle">Configure aimbot settings</div>
+            <div class="control-section" id="aimbot-controls">
+                <div class="sections-grid">
+                    <div class="section-box">
+                        <div class="section-header">GLOBAL SETTINGS</div>
+                        <div class="control-row">
+                            <input type="checkbox" id="aimbot-enabled">
+                            <label>Enabled</label>
+                        </div>
+                        <div class="control-row">
+                            <label>Keybind</label>
+                            <div class="keybind" id="aimbot-keybind">Click to set</div>
+                        </div>
+                        <div class="control-row">
+                            <label>Mode</label>
+                            <select id="aimbot-mode">
+                                <option value="legit">Legit</option>
+                                <option value="rage">Rage</option>
+                            </select>
+                        </div>
+                        <div class="control-row">
+                            <label>Bone Target</label>
+                            <select id="aimbot-bone">
+                                <option value="head">Head</option>
+                                <option value="neck">Neck</option>
+                                <option value="chest">Chest</option>
+                                <option value="stomach">Stomach</option>
+                            </select>
+                        </div>
+                        <div class="control-row">
+                            <label>Aiming Styles</label>
+                            <select id="aimbot-styles">
+                                <option value="smooth">Smooth</option>
+                                <option value="instant">Instant</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="section-box" id="aimbot-smoothing-section">
+                        <div class="section-header">SMOOTHING</div>
+                        <div class="control-row has-slider">
+                            <label>X Smoothing</label>
+                            <div class="slider-group">
+                                <input type="range" id="aimbot-x-smooth" min="1" max="100" value="25" class="long-slider">
+                                <input type="number" class="value-display" id="aimbot-x-smooth-value" value="25" min="1" max="100">
+                            </div>
+                            <label style="margin-left: 20px;">Y Smoothing</label>
+                            <div class="slider-group">
+                                <input type="range" id="aimbot-y-smooth" min="1" max="100" value="25" class="long-slider">
+                                <input type="number" class="value-display" id="aimbot-y-smooth-value" value="25" min="1" max="100">
+                            </div>
+                        </div>
+                        <div class="easing-graph" id="easing-graph">
+                            <div class="easing-title">Easing Style</div>
+                            <div class="easing-styles">
+                                <div class="easing-option selected" data-easing="linear">Linear</div>
+                                <div class="easing-option" data-easing="easeInSine">Ease In Sine</div>
+                                <div class="easing-option" data-easing="cubic">Cubic</div>
+                                <div class="easing-option" data-easing="elastic">Elastic</div>
+                                <div class="easing-option" data-easing="exponential">Exponential</div>
+                                <div class="easing-option" data-easing="circular">Circular</div>
+                                <div class="easing-option" data-easing="bounce">Bounce</div>
+                            </div>
+                            <div class="easing-preview" id="easing-preview">
+                                <canvas id="easing-canvas" class="easing-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-box" id="aimbot-targeting-section">
+                        <div class="section-header">TARGETING</div>
+                        <div class="control-row">
+                            <input type="checkbox" id="aimbot-target-switch">
+                            <label>Target Switching</label>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="aimbot-sticky-aim">
+                            <label>Sticky Aim</label>
+                        </div>
+                        <div class="control-row has-slider">
+                            <label>Field Of View</label>
+                            <div class="slider-group">
+                                <input type="range" id="aimbot-fov" min="0" max="300" value="90">
+                                <input type="number" class="value-display" id="aimbot-fov-value" value="90" min="0" max="300">
+                            </div>
+                        </div>
+                        <div class="control-row has-slider">
+                            <label>Aim Interval</label>
+                            <div class="slider-group">
+                                <input type="range" id="aimbot-interval" min="1" max="100" value="10">
+                                <input type="number" class="value-display" id="aimbot-interval-value" value="10" min="1" max="100">
+                            </div>
+                        </div>
+                        <div class="control-row has-slider">
+                            <label>Reaction Time</label>
+                            <div class="slider-group">
+                                <input type="range" id="aimbot-reaction" min="0" max="500" value="50">
+                                <input type="number" class="value-display" id="aimbot-reaction-value" value="50" min="0" max="500">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-box" id="aimbot-filters-section">
+                        <div class="section-header">FILTERS</div>
+                        <div class="control-row">
+                            <input type="checkbox" id="aimbot-visible-check">
+                            <label>Visible Check</label>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="aimbot-ignore-knocked">
+                            <label>Ignore Dead</label>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="aimbot-ignore-npc">
+                            <label>Ignore NPC</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="triggerbot">
+            <div class="content-header">Triggerbot</div>
+            <div class="content-subtitle">Configure triggerbot settings</div>
+            <div class="control-section" id="triggerbot-controls">
+                <div class="sections-grid">
+                    <div class="section-box">
+                        <div class="section-header">GLOBAL SETTINGS</div>
+                        <div class="control-row">
+                            <input type="checkbox" id="triggerbot-enabled">
+                            <label>Enabled</label>
+                        </div>
+                        <div class="control-row">
+                            <label>Keybind</label>
+                            <div class="keybind" id="triggerbot-keybind">Click to set</div>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="triggerbot-smart-trigger">
+                            <label>Smart Trigger</label>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="triggerbot-burst-mode">
+                            <label>Burst Mode</label>
+                        </div>
+                    </div>
+                    <div class="section-box">
+                        <div class="section-header">SETTINGS</div>
+                        <div class="control-row has-slider" id="triggerbot-fov-row">
+                            <label>FOV</label>
+                            <div class="slider-group">
+                                <input type="range" id="triggerbot-fov" min="0" max="180" value="30">
+                                <input type="number" class="value-display" id="triggerbot-fov-value" value="30" min="0" max="180">
+                            </div>
+                        </div>
+                        <div class="control-row has-slider">
+                            <label>Reaction Time</label>
+                            <div class="slider-group">
+                                <input type="range" id="triggerbot-reaction" min="0" max="500" value="50">
+                                <input type="number" class="value-display" id="triggerbot-reaction-value" value="50" min="0" max="500">
+                            </div>
+                        </div>
+                        <div class="control-row has-slider">
+                            <label>Delay</label>
+                            <div class="slider-group">
+                                <input type="range" id="triggerbot-delay" min="0" max="500" value="0">
+                                <input type="number" class="value-display" id="triggerbot-delay-value" value="0" min="0" max="500">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-box">
+                        <div class="section-header">PREVIEW</div>
+                        <div class="triggerbot-preview">
+                            <canvas id="triggerbot-canvas" class="triggerbot-canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="section-box">
+                        <div class="section-header">FILTERS</div>
+                        <div class="control-row">
+                            <input type="checkbox" id="triggerbot-ignore-npc">
+                            <label>Ignore NPC</label>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="triggerbot-ignore-dead">
+                            <label>Ignore Dead</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="player-esp">
+            <div class="content-header">ESP</div>
+            <div class="content-subtitle">Configure ESP settings</div>
+            <div class="control-section" id="esp-controls">
+                <div class="sections-grid">
+                    <div class="section-box">
+                        <div class="section-header">PLAYER ESP</div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-enabled">
+                            <label>Enabled</label>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-skeleton">
+                            <label>Skeleton</label>
+                            <input type="color" id="esp-skeleton-color" value="#ffffff">
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-head-circle">
+                            <label>Head Circle</label>
+                            <input type="color" id="esp-head-circle-color" value="#ffffff">
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-box">
+                            <label>Box</label>
+                            <input type="color" id="esp-box-color" value="#ffffff">
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-health-bar">
+                            <label>Health Bar</label>
+                            <input type="color" id="esp-health-color" value="#00ff00">
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-armor-bar">
+                            <label>Armor Bar</label>
+                            <input type="color" id="esp-armor-color" value="#00aaff">
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-name">
+                            <label>Name</label>
+                            <input type="color" id="esp-name-color" value="#ffffff">
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-id">
+                            <label>ID</label>
+                            <input type="color" id="esp-id-color" value="#ffffff">
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-weapon">
+                            <label>Weapon</label>
+                            <input type="color" id="esp-weapon-color" value="#ffffff">
+                        </div>
+                        <div class="section-header" style="margin-top: 16px;">FILTERS</div>
+                        <div class="control-row">
+                            <input type="checkbox" id="esp-visible-check">
+                            <label>Visible Check</label>
+                            <input type="color" id="esp-visible-check-color" value="#ffffff">
+                        </div>
+                    </div>
+                    <div class="section-box">
+                        <div class="section-header">PREVIEW</div>
+                        <div class="preview-image-container">
+                            <img src="../../../website/esp-preview.png" alt="ESP Preview" class="preview-image">
+                            <canvas id="skeleton-overlay" class="skeleton-overlay"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="player-list">
+            <div class="content-header">Player List</div>
+            <div class="content-subtitle">View player list</div>
+            <div class="control-section" id="player-list-controls">
+                <div class="sections-grid">
+                    <div class="section-box">
+                        <div class="section-header">PLAYERS</div>
+                        <div class="player-list-container">
+                            <div class="player-item">
+                                <span class="player-name">Player 1</span>
+                                <span class="player-id">#123</span>
+                            </div>
+                            <div class="player-item">
+                                <span class="player-name">Player 2</span>
+                                <span class="player-id">#456</span>
+                            </div>
+                            <div class="player-item">
+                                <span class="player-name">Player 3</span>
+                                <span class="player-id">#789</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-box">
+                        <div class="section-header">OPTIONS</div>
+                        <div class="control-row">
+                            <button class="option-button" id="add-friend-btn">Add Friend</button>
+                        </div>
+                        <div class="control-row">
+                            <button class="option-button" id="remove-friend-btn">Remove Friend</button>
+                        </div>
+                        <div class="control-row">
+                            <button class="option-button" id="spectate-btn">Spectate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="misc">
+            <div class="content-header">Misc</div>
+            <div class="content-subtitle">Configure miscellaneous settings</div>
+            <div class="control-section" id="misc-controls">
+                <div class="sections-grid">
+                    <div class="section-box">
+                        <div class="section-header">SECURITY</div>
+                        <div class="control-row">
+                            <input type="checkbox" id="streamproof">
+                            <label>Streamproof</label>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="keybind-list">
+                            <label>Keybind List</label>
+                        </div>
+                        <div class="control-row">
+                            <input type="checkbox" id="vsync">
+                            <label>VSync</label>
+                        </div>
+                        <div class="control-row">
+                            <label>Menu Key</label>
+                            <div class="keybind-box" id="menu-keybind">Click to set</div>
+                        </div>
+                    </div>
+                    <div class="section-box">
+                        <div class="section-header">CLEANING</div>
+                        <div class="control-row">
+                            <button class="option-button">Uninject</button>
+                        </div>
+                        <div class="control-row">
+                            <button class="option-button">Rescan</button>
+                        </div>
+                        <div class="control-row">
+                            <button class="option-button">Self Destruct</button>
+                        </div>
+                        <div class="control-row">
+                            <button class="option-button">Clean Traces</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="configs">
+            <div class="content-header">Configs</div>
+            <div class="content-subtitle">Manage configurations</div>
+            <div class="control-section" id="configs-controls">
+                <div class="sections-grid">
+                    <div class="section-box">
+                        <div class="section-header">CONFIG NAME</div>
+                        <div class="control-row">
+                            <input type="text" id="config-name" placeholder="Enter config name..." class="config-input">
+                        </div>
+                        <div class="control-row">
+                            <button class="option-button">Save Config</button>
+                        </div>
+                    </div>
+                    <div class="section-box">
+                        <div class="section-header">CONFIGS</div>
+                        <div class="config-list-container">
+                            <div class="config-item selected">
+                                <span class="config-name">Default</span>
+                            </div>
+                            <div class="config-item">
+                                <span class="config-name">Aim Config</span>
+                            </div>
+                            <div class="config-item">
+                                <span class="config-name">Legit Config</span>
+                            </div>
+                        </div>
+                        <div class="control-row" style="margin-top: 12px;">
+                            <button class="option-button">Load</button>
+                        </div>
+                        <div class="control-row">
+                            <button class="option-button">Delete</button>
+                        </div>
+                        <div class="control-row">
+                            <button class="option-button">Overwrite</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-box" style="margin-top: 12px;">
+                    <div class="section-header">IMPORT/EXPORT</div>
+                    <div class="control-row">
+                        <button class="option-button">Copy Code</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="option-button">Load Code</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="interface">
+            <div class="content-header">Interface</div>
+            <div class="content-subtitle">Customize interface</div>
+            <div class="control-section" id="interface-controls">
+                <div class="sections-grid">
+                    <div class="section-box">
+                        <div class="section-header">COLORS</div>
+                        <div class="control-row">
+                            <label>Background</label>
+                            <input type="color" id="color-background" value="#121519">
+                        </div>
+                        <div class="control-row">
+                            <label>Text</label>
+                            <input type="color" id="color-text" value="#ffffff">
+                        </div>
+                        <div class="control-row">
+                            <label>Section BG</label>
+                            <input type="color" id="color-section-bg" value="#1a1a1a">
+                        </div>
+                        <div class="control-row">
+                            <label>Accent</label>
+                            <input type="color" id="color-accent" value="#1a1a1a">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const menuItems = document.querySelectorAll('.menu-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                menuItems.forEach(i => i.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById(item.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Triggerbot preview
+        const triggerbotCanvas = document.getElementById('triggerbot-canvas');
+        const triggerbotCtx = triggerbotCanvas.getContext('2d');
+        let triggerbotAnimationId = null;
+        
+        let dotAngle = 0;
+        let dotRadius = 60;
+        let targetHitTime = 0;
+        let hitmarkerAlpha = 0;
+        let isOverCrosshair = false;
+        let isInsideFov = false;
+
+        function drawTriggerbotPreview() {
+            const width = triggerbotCanvas.width = triggerbotCanvas.offsetWidth;
+            const height = triggerbotCanvas.height = triggerbotCanvas.offsetHeight;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const currentTime = Date.now();
+            
+            triggerbotCtx.clearRect(0, 0, width, height);
+            
+            // Draw background grid
+            triggerbotCtx.strokeStyle = '#222';
+            triggerbotCtx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                const x = (width / 10) * i;
+                triggerbotCtx.beginPath();
+                triggerbotCtx.moveTo(x, 0);
+                triggerbotCtx.lineTo(x, height);
+                triggerbotCtx.stroke();
+            }
+            for (let i = 0; i <= 10; i++) {
+                const y = (height / 10) * i;
+                triggerbotCtx.beginPath();
+                triggerbotCtx.moveTo(0, y);
+                triggerbotCtx.lineTo(width, y);
+                triggerbotCtx.stroke();
+            }
+            
+            // Get FOV value
+            const fovValue = parseInt(document.getElementById('triggerbot-fov')?.value || 30);
+            const smartTriggerEnabled = document.getElementById('triggerbot-smart-trigger')?.checked;
+            
+            // Draw FOV circle (only if not smart trigger)
+            let fovRadius = 0;
+            if (!smartTriggerEnabled) {
+                fovRadius = (fovValue / 180) * Math.min(width, height) * 0.4;
+                triggerbotCtx.strokeStyle = '#0000A3';
+                triggerbotCtx.lineWidth = 2;
+                triggerbotCtx.beginPath();
+                triggerbotCtx.arc(centerX, centerY, fovRadius, 0, Math.PI * 2);
+                triggerbotCtx.stroke();
+            }
+            
+            // Draw crosshair
+            triggerbotCtx.strokeStyle = '#fff';
+            triggerbotCtx.lineWidth = 2;
+            triggerbotCtx.beginPath();
+            triggerbotCtx.moveTo(centerX - 15, centerY);
+            triggerbotCtx.lineTo(centerX + 15, centerY);
+            triggerbotCtx.moveTo(centerX, centerY - 15);
+            triggerbotCtx.lineTo(centerX, centerY + 15);
+            triggerbotCtx.stroke();
+            
+            // Calculate dot position (moving in figure-8 pattern to cross through center)
+            dotAngle += 0.02;
+            const dotX = centerX + Math.sin(dotAngle) * dotRadius;
+            const dotY = centerY + Math.sin(dotAngle * 2) * (dotRadius * 0.3);
+            
+            // Check if dot is near crosshair center
+            const distance = Math.sqrt((dotX - centerX) ** 2 + (dotY - centerY) ** 2);
+            const reactionTime = parseInt(document.getElementById('triggerbot-reaction')?.value || 50);
+            const delay = parseInt(document.getElementById('triggerbot-delay')?.value || 0);
+            const totalDelay = reactionTime + delay;
+            
+            // Draw target dot
+            triggerbotCtx.fillStyle = '#ff4444';
+            triggerbotCtx.beginPath();
+            triggerbotCtx.arc(dotX, dotY, 6, 0, Math.PI * 2);
+            triggerbotCtx.fill();
+            
+            // Check trigger conditions
+            let shouldTrigger = false;
+            
+            if (smartTriggerEnabled) {
+                // Smart trigger: only click if dot is under crosshair
+                if (distance < 15 && !isOverCrosshair) {
+                    isOverCrosshair = true;
+                    targetHitTime = currentTime;
+                } else if (distance >= 15) {
+                    isOverCrosshair = false;
+                    targetHitTime = 0;
+                }
+                
+                if (isOverCrosshair && targetHitTime > 0 && (currentTime - targetHitTime) >= totalDelay) {
+                    shouldTrigger = true;
+                }
+            } else {
+                // Normal trigger: click if dot is inside FOV
+                if (distance < fovRadius && !isInsideFov) {
+                    isInsideFov = true;
+                    targetHitTime = currentTime;
+                } else if (distance >= fovRadius) {
+                    isInsideFov = false;
+                    targetHitTime = 0;
+                }
+                
+                if (isInsideFov && targetHitTime > 0 && (currentTime - targetHitTime) >= totalDelay) {
+                    shouldTrigger = true;
+                }
+            }
+            
+            // Draw hitmarker when triggered
+            if (shouldTrigger) {
+                hitmarkerAlpha = 1;
+            }
+            
+            if (hitmarkerAlpha > 0) {
+                hitmarkerAlpha -= 0.03;
+                if (hitmarkerAlpha < 0) hitmarkerAlpha = 0;
+                
+                // Draw hitmarker (X shape)
+                triggerbotCtx.strokeStyle = `rgba(255, 68, 68, ${hitmarkerAlpha})`;
+                triggerbotCtx.lineWidth = 3;
+                triggerbotCtx.beginPath();
+                triggerbotCtx.moveTo(centerX - 15, centerY - 15);
+                triggerbotCtx.lineTo(centerX + 15, centerY + 15);
+                triggerbotCtx.moveTo(centerX + 15, centerY - 15);
+                triggerbotCtx.lineTo(centerX - 15, centerY + 15);
+                triggerbotCtx.stroke();
+            }
+            
+            triggerbotAnimationId = requestAnimationFrame(drawTriggerbotPreview);
+        }
+        
+        // Start triggerbot preview when tab is active
+        drawTriggerbotPreview();
+
+        // Smart trigger toggle - hide FOV when enabled
+        const smartTriggerCheckbox = document.getElementById('triggerbot-smart-trigger');
+        const fovRow = document.getElementById('triggerbot-fov-row');
+
+        smartTriggerCheckbox.addEventListener('change', () => {
+            if (smartTriggerCheckbox.checked) {
+                fovRow.style.display = 'none';
+            } else {
+                fovRow.style.display = 'flex';
+            }
+        });
+
+        // Interface color customization
+        const colorBackground = document.getElementById('color-background');
+        const colorText = document.getElementById('color-text');
+        const colorSectionBg = document.getElementById('color-section-bg');
+        const colorAccent = document.getElementById('color-accent');
+
+        function updateColors() {
+            const bgColor = colorBackground.value;
+            const textColor = colorText.value;
+            const sectionBg = colorSectionBg.value;
+            const accentColor = colorAccent.value;
+
+            // Apply to actual interface
+            document.body.style.background = bgColor;
+            document.querySelectorAll('.section-box').forEach(box => {
+                box.style.background = sectionBg;
+                box.style.borderColor = accentColor;
+            });
+            document.querySelectorAll('.content-header, .section-header').forEach(header => {
+                header.style.color = textColor;
+            });
+            document.querySelectorAll('.control-row label').forEach(label => {
+                label.style.color = textColor;
+            });
+        }
+
+        colorBackground.addEventListener('input', updateColors);
+        colorText.addEventListener('input', updateColors);
+        colorSectionBg.addEventListener('input', updateColors);
+        colorAccent.addEventListener('input', updateColors);
+
+        // Initialize colors
+        updateColors();
+
+        // Player selection
+        const playerItems = document.querySelectorAll('.player-item');
+        const addFriendBtn = document.getElementById('add-friend-btn');
+        const removeFriendBtn = document.getElementById('remove-friend-btn');
+        const spectateBtn = document.getElementById('spectate-btn');
+        
+        // Track friend states and spectate state
+        const playerFriends = new Set();
+        let spectatingPlayer = null;
+        let selectedPlayer = null;
+        
+        playerItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove selected class from all items
+                playerItems.forEach(pi => pi.classList.remove('selected'));
+                // Add selected class to clicked item
+                item.classList.add('selected');
+                selectedPlayer = item;
+                
+                // Update button states based on selected player
+                updateButtonStates();
+            });
+        });
+        
+        function updateButtonStates() {
+            if (!selectedPlayer) return;
+            
+            const playerId = selectedPlayer.querySelector('.player-id').textContent;
+            
+            // Highlight Add Friend button if player is a friend
+            if (playerFriends.has(playerId)) {
+                addFriendBtn.style.background = 'linear-gradient(180deg, #0000A3 0%, #000086 100%)';
+                addFriendBtn.style.borderColor = '#0000A3';
+            } else {
+                addFriendBtn.style.background = '';
+                addFriendBtn.style.borderColor = '';
+            }
+            
+            // Update Spectate button text
+            if (spectatingPlayer === playerId) {
+                spectateBtn.textContent = 'Unspectate';
+            } else {
+                spectateBtn.textContent = 'Spectate';
+            }
+        }
+        
+        addFriendBtn.addEventListener('click', () => {
+            if (!selectedPlayer) return;
+            const playerId = selectedPlayer.querySelector('.player-id').textContent;
+            playerFriends.add(playerId);
+            updateButtonStates();
+        });
+        
+        removeFriendBtn.addEventListener('click', () => {
+            if (!selectedPlayer) return;
+            const playerId = selectedPlayer.querySelector('.player-id').textContent;
+            playerFriends.delete(playerId);
+            updateButtonStates();
+        });
+        
+        spectateBtn.addEventListener('click', () => {
+            if (!selectedPlayer) return;
+            const playerId = selectedPlayer.querySelector('.player-id').textContent;
+            
+            if (spectatingPlayer === playerId) {
+                spectatingPlayer = null;
+            } else {
+                spectatingPlayer = playerId;
+            }
+            updateButtonStates();
+        });
+
+        // Menu keybind selector
+        const menuKeybindBox = document.getElementById('menu-keybind');
+        let menuRecording = false;
+        let menuKeybindValue = 'INSERT';
+        
+        menuKeybindBox.textContent = menuKeybindValue;
+        
+        menuKeybindBox.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuRecording = true;
+            menuKeybindBox.classList.add('recording');
+            menuKeybindBox.textContent = '';
+            
+            // Animated dots
+            let dots = 0;
+            const dotInterval = setInterval(() => {
+                if (!menuRecording) {
+                    clearInterval(dotInterval);
+                    return;
+                }
+                dots = (dots + 1) % 4;
+                menuKeybindBox.textContent = '.'.repeat(dots);
+            }, 200);
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (!menuRecording) return;
+            e.preventDefault();
+            
+            // Cancel with Escape
+            if (e.key === 'Escape') {
+                menuRecording = false;
+                menuKeybindBox.classList.remove('recording');
+                menuKeybindBox.textContent = menuKeybindValue;
+                return;
+            }
+            
+            // Normalize special keys
+            let keyName = e.key;
+            if (keyName === ' ') keyName = 'Space';
+            else if (keyName === 'Control') keyName = 'Ctrl';
+            else if (keyName === 'ArrowUp') keyName = 'Up';
+            else if (keyName === 'ArrowDown') keyName = 'Down';
+            else if (keyName === 'ArrowLeft') keyName = 'Left';
+            else if (keyName === 'ArrowRight') keyName = 'Right';
+            
+            menuKeybindValue = keyName;
+            menuRecording = false;
+            menuKeybindBox.classList.remove('recording');
+            menuKeybindBox.textContent = menuKeybindValue;
+        });
+        
+        document.addEventListener('mousedown', (e) => {
+            if (!menuRecording) return;
+            if (e.target === menuKeybindBox) return;
+            
+            e.preventDefault();
+            const mouseButtons = ['Mouse1', 'Mouse2', 'Mouse3', 'Mouse4', 'Mouse5'];
+            const buttonIndex = e.button;
+            if (buttonIndex >= 0 && buttonIndex < mouseButtons.length) {
+                menuKeybindValue = mouseButtons[buttonIndex];
+                menuRecording = false;
+                menuKeybindBox.classList.remove('recording');
+                menuKeybindBox.textContent = menuKeybindValue;
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (menuRecording && e.target !== menuKeybindBox) {
+                menuRecording = false;
+                menuKeybindBox.classList.remove('recording');
+                menuKeybindBox.textContent = menuKeybindValue;
+            }
+        });
+
+        // Skeleton overlay on preview
+        const skeletonCheckbox = document.getElementById('esp-skeleton');
+        const skeletonOverlay = document.getElementById('skeleton-overlay');
+        const skeletonCtx = skeletonOverlay.getContext('2d');
+        let skeletonAnimationId = null;
+        
+        // Position tracking for draggable ESP elements (snap positions - no center)
+        const espElementPositions = {
+            healthBar: { x: 'right', y: 'center' },
+            armorBar: { x: 'left', y: 'center' },
+            name: { x: 'center', y: 'top' },
+            id: { x: 'center', y: 'top' },
+            weapon: { x: 'center', y: 'bottom' }
+        };
+        
+        let draggingElement = null;
+
+        function drawESPOverlay() {
+            const width = skeletonOverlay.width = skeletonOverlay.offsetWidth;
+            const height = skeletonOverlay.height = skeletonOverlay.offsetHeight;
+            
+            skeletonCtx.clearRect(0, 0, width, height);
+            
+            // Check if ESP is enabled
+            const espEnabled = document.getElementById('esp-enabled')?.checked;
+            if (!espEnabled) return;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = height / 500;
+            
+            // Draw skeleton if enabled
+            if (skeletonCheckbox.checked) {
+                const skeletonColor = document.getElementById('esp-skeleton-color')?.value || '#ffffff';
+                skeletonCtx.strokeStyle = skeletonColor;
+                skeletonCtx.lineWidth = 2;
+                skeletonCtx.lineCap = 'round';
+                
+                // Neck
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX, centerY - 158 * scale);
+                skeletonCtx.lineTo(centerX, centerY - 140 * scale);
+                skeletonCtx.stroke();
+                
+                // Spine
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX, centerY - 140 * scale);
+                skeletonCtx.lineTo(centerX, centerY + 30 * scale);
+                skeletonCtx.stroke();
+                
+                // Shoulders
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX - 25 * scale, centerY - 130 * scale);
+                skeletonCtx.lineTo(centerX + 25 * scale, centerY - 130 * scale);
+                skeletonCtx.stroke();
+                
+                // Left arm
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX - 35 * scale, centerY - 130 * scale);
+                skeletonCtx.lineTo(centerX - 25 * scale, centerY - 60 * scale);
+                skeletonCtx.lineTo(centerX - 15 * scale, centerY - 10 * scale);
+                skeletonCtx.stroke();
+                
+                // Right arm
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX + 35 * scale, centerY - 130 * scale);
+                skeletonCtx.lineTo(centerX + 25 * scale, centerY - 60 * scale);
+                skeletonCtx.lineTo(centerX + 15 * scale, centerY - 10 * scale);
+                skeletonCtx.stroke();
+                
+                // Hips
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX - 30 * scale, centerY + 30 * scale);
+                skeletonCtx.lineTo(centerX + 30 * scale, centerY + 30 * scale);
+                skeletonCtx.stroke();
+                
+                // Left leg
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX - 30 * scale, centerY + 30 * scale);
+                skeletonCtx.lineTo(centerX - 32 * scale, centerY + 120 * scale);
+                skeletonCtx.lineTo(centerX - 32 * scale, centerY + 210 * scale);
+                skeletonCtx.stroke();
+                
+                // Right leg
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX + 30 * scale, centerY + 30 * scale);
+                skeletonCtx.lineTo(centerX + 32 * scale, centerY + 120 * scale);
+                skeletonCtx.lineTo(centerX + 32 * scale, centerY + 210 * scale);
+                skeletonCtx.stroke();
+            }
+            
+            // Draw box if enabled
+            if (document.getElementById('esp-box')?.checked) {
+                const boxColor = document.getElementById('esp-box-color')?.value || '#ffffff';
+                skeletonCtx.strokeStyle = boxColor;
+                skeletonCtx.lineWidth = 2;
+                const boxWidth = 200 * scale;
+                const boxHeight = 420 * scale;
+                skeletonCtx.strokeRect(centerX - boxWidth / 2, centerY - 210 * scale, boxWidth, boxHeight);
+            }
+            
+            // Draw health bar if enabled
+            if (document.getElementById('esp-health-bar')?.checked) {
+                const healthColor = document.getElementById('esp-health-color')?.value || '#00ff00';
+                const boxWidth = 200 * scale;
+                const pos = espElementPositions.healthBar;
+                let barWidth = 8 * scale;
+                let barHeight = 420 * scale;
+                let x, y;
+                
+                // Smaller bar on top/bottom, centered horizontally
+                if (pos.y === 'top' || pos.y === 'bottom') {
+                    barWidth = 200 * scale;
+                    barHeight = 8 * scale;
+                    x = centerX - barWidth / 2;
+                } else {
+                    if (pos.x === 'right') x = centerX + boxWidth / 2 + 5 * scale;
+                    else if (pos.x === 'left') x = centerX - boxWidth / 2 - 13 * scale - barWidth;
+                    else x = centerX - barWidth / 2;
+                }
+                
+                if (pos.y === 'top') y = centerY - 210 * scale;
+                else if (pos.y === 'bottom') y = centerY + 210 * scale - barHeight;
+                else y = centerY - 210 * scale;
+                
+                skeletonCtx.fillStyle = healthColor;
+                skeletonCtx.fillRect(x, y, barWidth, barHeight);
+            }
+            
+            // Draw armor bar if enabled
+            if (document.getElementById('esp-armor-bar')?.checked) {
+                const armorColor = document.getElementById('esp-armor-color')?.value || '#00aaff';
+                const boxWidth = 200 * scale;
+                const pos = espElementPositions.armorBar;
+                let barWidth = 8 * scale;
+                let barHeight = 420 * scale;
+                let x, y;
+                
+                // Smaller bar on top/bottom, centered horizontally
+                if (pos.y === 'top' || pos.y === 'bottom') {
+                    barWidth = 200 * scale;
+                    barHeight = 8 * scale;
+                    x = centerX - barWidth / 2;
+                } else {
+                    if (pos.x === 'right') x = centerX + boxWidth / 2 + 5 * scale;
+                    else if (pos.x === 'left') x = centerX - boxWidth / 2 - 13 * scale - barWidth;
+                    else x = centerX - barWidth / 2;
+                }
+                
+                if (pos.y === 'top') y = centerY - 210 * scale;
+                else if (pos.y === 'bottom') y = centerY + 210 * scale - barHeight;
+                else y = centerY - 210 * scale;
+                
+                skeletonCtx.fillStyle = armorColor;
+                skeletonCtx.fillRect(x, y, barWidth, barHeight);
+            }
+            
+            // Draw name if enabled
+            if (document.getElementById('esp-name')?.checked) {
+                const nameColor = document.getElementById('esp-name-color')?.value || '#ffffff';
+                const pos = espElementPositions.name;
+                let x, y;
+                
+                // Position based on x and y
+                if (pos.x === 'right') x = centerX + 100 * scale;
+                else if (pos.x === 'left') x = centerX - 100 * scale;
+                else x = centerX; // center
+                
+                if (pos.y === 'top') y = centerY - 240 * scale;
+                else if (pos.y === 'bottom') y = centerY + 240 * scale;
+                else y = centerY - 200 * scale; // Near top when on sides
+                
+                // Text alignment
+                if (pos.x === 'center') skeletonCtx.textAlign = 'center';
+                else skeletonCtx.textAlign = pos.x === 'left' ? 'right' : 'left';
+                
+                skeletonCtx.fillStyle = nameColor;
+                skeletonCtx.font = `${14 * scale}px Arial`;
+                skeletonCtx.fillText('Player', x, y);
+            }
+            
+            // Draw ID if enabled
+            if (document.getElementById('esp-id')?.checked) {
+                const idColor = document.getElementById('esp-id-color')?.value || '#ffffff';
+                const pos = espElementPositions.id;
+                let x, y;
+                
+                // Position based on x and y
+                if (pos.x === 'right') x = centerX + 100 * scale;
+                else if (pos.x === 'left') x = centerX - 100 * scale;
+                else x = centerX; // center
+                
+                if (pos.y === 'top') y = centerY - 225 * scale;
+                else if (pos.y === 'bottom') y = centerY + 225 * scale;
+                else y = centerY - 185 * scale; // Near top when on sides
+                
+                // Text alignment
+                if (pos.x === 'center') skeletonCtx.textAlign = 'center';
+                else skeletonCtx.textAlign = pos.x === 'left' ? 'right' : 'left';
+                
+                skeletonCtx.fillStyle = idColor;
+                skeletonCtx.font = `${12 * scale}px Arial`;
+                skeletonCtx.fillText('#123', x, y);
+            }
+            
+            // Draw weapon if enabled
+            if (document.getElementById('esp-weapon')?.checked) {
+                const weaponColor = document.getElementById('esp-weapon-color')?.value || '#ffffff';
+                const pos = espElementPositions.weapon;
+                let x, y;
+                
+                // Position based on x and y
+                if (pos.x === 'right') x = centerX + 100 * scale;
+                else if (pos.x === 'left') x = centerX - 100 * scale;
+                else x = centerX; // center
+                
+                if (pos.y === 'top') y = centerY - 230 * scale;
+                else if (pos.y === 'bottom') y = centerY + 230 * scale;
+                else y = centerY - 170 * scale; // Near top when on sides
+                
+                // Text alignment
+                if (pos.x === 'center') skeletonCtx.textAlign = 'center';
+                else skeletonCtx.textAlign = pos.x === 'left' ? 'right' : 'left';
+                
+                skeletonCtx.fillStyle = weaponColor;
+                skeletonCtx.font = `${12 * scale}px Arial`;
+                skeletonCtx.fillText('AK-47', x, y);
+            }
+            
+            // Draw head circle if enabled (independent of skeleton)
+            if (document.getElementById('esp-head-circle')?.checked) {
+                const headCircleColor = document.getElementById('esp-head-circle-color')?.value || '#ffffff';
+                skeletonCtx.strokeStyle = headCircleColor;
+                skeletonCtx.lineWidth = 2;
+                skeletonCtx.beginPath();
+                skeletonCtx.arc(centerX, centerY - 180 * scale, 30 * scale, 0, Math.PI * 2);
+                skeletonCtx.stroke();
+            }
+            
+            // Draw placement line when dragging
+            if (draggingElement) {
+                const boxWidth = 200 * scale;
+                const boxHeight = 420 * scale;
+                skeletonCtx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                skeletonCtx.lineWidth = 2;
+                skeletonCtx.setLineDash([5, 5]);
+                
+                // Draw box outline
+                skeletonCtx.strokeRect(centerX - boxWidth / 2, centerY - 210 * scale, boxWidth, boxHeight);
+                
+                // Draw outer lines (left, right, top, bottom)
+                skeletonCtx.beginPath();
+                skeletonCtx.moveTo(centerX - boxWidth / 2, centerY - 210 * scale);
+                skeletonCtx.lineTo(centerX - boxWidth / 2, centerY + 210 * scale);
+                skeletonCtx.moveTo(centerX + boxWidth / 2, centerY - 210 * scale);
+                skeletonCtx.lineTo(centerX + boxWidth / 2, centerY + 210 * scale);
+                skeletonCtx.moveTo(centerX - boxWidth / 2, centerY - 210 * scale);
+                skeletonCtx.lineTo(centerX + boxWidth / 2, centerY - 210 * scale);
+                skeletonCtx.moveTo(centerX - boxWidth / 2, centerY + 210 * scale);
+                skeletonCtx.lineTo(centerX + boxWidth / 2, centerY + 210 * scale);
+                skeletonCtx.stroke();
+                
+                skeletonCtx.setLineDash([]);
+            }
+        }
+
+        // Add event listeners for all ESP toggles
+        const espToggles = ['esp-enabled', 'esp-skeleton', 'esp-box', 'esp-health-bar', 'esp-armor-bar', 'esp-name', 'esp-id', 'esp-weapon', 'esp-head-circle', 'esp-visible-check'];
+        espToggles.forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) {
+                checkbox.addEventListener('change', drawESPOverlay);
+            }
+        });
+
+        // Add event listeners for all ESP color pickers
+        const espColorPickers = ['esp-skeleton-color', 'esp-box-color', 'esp-health-color', 'esp-armor-color', 'esp-name-color', 'esp-id-color', 'esp-weapon-color', 'esp-head-circle-color', 'esp-visible-check-color'];
+        espColorPickers.forEach(id => {
+            const picker = document.getElementById(id);
+            if (picker) {
+                picker.addEventListener('input', drawESPOverlay);
+            }
+        });
+        
+        // Drag functionality for ESP elements
+        skeletonOverlay.addEventListener('mousedown', (e) => {
+            const rect = skeletonOverlay.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const width = skeletonOverlay.width;
+            const height = skeletonOverlay.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = height / 500;
+            
+            // Check if clicking on a draggable element
+            const boxWidth = 200 * scale;
+            const barWidth = 8 * scale;
+            const barHeight = 420 * scale;
+            
+            // Check health bar
+            if (document.getElementById('esp-health-bar')?.checked) {
+                const pos = espElementPositions.healthBar;
+                let hx, hy, hbw, hbh;
+                if (pos.y === 'top' || pos.y === 'bottom') {
+                    hbw = 200 * scale;
+                    hbh = 8 * scale;
+                    hx = centerX - hbw / 2;
+                } else {
+                    hbw = 8 * scale;
+                    hbh = 420 * scale;
+                    if (pos.x === 'right') hx = centerX + boxWidth / 2 + 5 * scale;
+                    else if (pos.x === 'left') hx = centerX - boxWidth / 2 - 13 * scale - hbw;
+                    else hx = centerX - hbw / 2;
+                }
+                if (pos.y === 'top') hy = centerY - 210 * scale;
+                else if (pos.y === 'bottom') hy = centerY + 210 * scale - hbh;
+                else hy = centerY - 210 * scale;
+                if (x >= hx && x <= hx + hbw && y >= hy && y <= hy + hbh) {
+                    draggingElement = 'healthBar';
+                    return;
+                }
+            }
+            
+            // Check armor bar
+            if (document.getElementById('esp-armor-bar')?.checked) {
+                const pos = espElementPositions.armorBar;
+                let ax, ay, abw, abh;
+                if (pos.y === 'top' || pos.y === 'bottom') {
+                    abw = 200 * scale;
+                    abh = 8 * scale;
+                    ax = centerX - abw / 2;
+                } else {
+                    abw = 8 * scale;
+                    abh = 420 * scale;
+                    if (pos.x === 'right') ax = centerX + boxWidth / 2 + 5 * scale;
+                    else if (pos.x === 'left') ax = centerX - boxWidth / 2 - 13 * scale - abw;
+                    else ax = centerX - abw / 2;
+                }
+                if (pos.y === 'top') ay = centerY - 210 * scale;
+                else if (pos.y === 'bottom') ay = centerY + 210 * scale - abh;
+                else ay = centerY - 210 * scale;
+                if (x >= ax && x <= ax + abw && y >= ay && y <= ay + abh) {
+                    draggingElement = 'armorBar';
+                    return;
+                }
+            }
+            
+            // Check name (approximate text area)
+            if (document.getElementById('esp-name')?.checked) {
+                const pos = espElementPositions.name;
+                let nx;
+                if (pos.x === 'right') nx = centerX + 100 * scale;
+                else if (pos.x === 'left') nx = centerX - 100 * scale;
+                else nx = centerX;
+                let ny = pos.y === 'top' ? centerY - 240 * scale : (pos.y === 'bottom' ? centerY + 240 * scale : centerY - 200 * scale);
+                if (Math.abs(x - nx) < 50 * scale && Math.abs(y - ny) < 20 * scale) {
+                    draggingElement = 'name';
+                    return;
+                }
+            }
+            
+            // Check ID (approximate text area)
+            if (document.getElementById('esp-id')?.checked) {
+                const pos = espElementPositions.id;
+                let idx;
+                if (pos.x === 'right') idx = centerX + 100 * scale;
+                else if (pos.x === 'left') idx = centerX - 100 * scale;
+                else idx = centerX;
+                let idy = pos.y === 'top' ? centerY - 225 * scale : (pos.y === 'bottom' ? centerY + 225 * scale : centerY - 185 * scale);
+                if (Math.abs(x - idx) < 50 * scale && Math.abs(y - idy) < 20 * scale) {
+                    draggingElement = 'id';
+                    return;
+                }
+            }
+            
+            // Check weapon (approximate text area)
+            if (document.getElementById('esp-weapon')?.checked) {
+                const pos = espElementPositions.weapon;
+                let wx;
+                if (pos.x === 'right') wx = centerX + 100 * scale;
+                else if (pos.x === 'left') wx = centerX - 100 * scale;
+                else wx = centerX;
+                let wy = pos.y === 'top' ? centerY - 230 * scale : (pos.y === 'bottom' ? centerY + 230 * scale : centerY - 170 * scale);
+                if (Math.abs(x - wx) < 50 * scale && Math.abs(y - wy) < 20 * scale) {
+                    draggingElement = 'weapon';
+                    return;
+                }
+            }
+        });
+        
+        skeletonOverlay.addEventListener('mousemove', (e) => {
+            if (!draggingElement) return;
+            
+            const rect = skeletonOverlay.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const width = skeletonOverlay.width;
+            const height = skeletonOverlay.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            
+            // Snap to nearest position
+            const dx = x - centerX;
+            const dy = y - centerY;
+            
+            // For health/armor bars, if on top/bottom, center horizontally
+            if (draggingElement === 'healthBar' || draggingElement === 'armorBar') {
+                // Allow center y to switch to left/right
+                if (Math.abs(dy) < 30) {
+                    espElementPositions[draggingElement].y = 'center';
+                    if (dx > 0) espElementPositions[draggingElement].x = 'right';
+                    else espElementPositions[draggingElement].x = 'left';
+                } else {
+                    if (dy > 0) espElementPositions[draggingElement].y = 'bottom';
+                    else espElementPositions[draggingElement].y = 'top';
+                    
+                    // If on top/bottom, center horizontally
+                    espElementPositions[draggingElement].x = 'center';
+                }
+            } else {
+                // For text elements - always snap based on cursor position
+                if (dy > 30) {
+                    espElementPositions[draggingElement].y = 'bottom';
+                } else if (dy < -30) {
+                    espElementPositions[draggingElement].y = 'top';
+                } else {
+                    espElementPositions[draggingElement].y = 'center';
+                }
+                
+                // Horizontal snap - if near center, snap to center
+                if (Math.abs(dx) < 40) {
+                    espElementPositions[draggingElement].x = 'center';
+                } else {
+                    if (dx > 0) espElementPositions[draggingElement].x = 'right';
+                    else espElementPositions[draggingElement].x = 'left';
+                }
+            }
+            
+            drawESPOverlay();
+        });
+        
+        skeletonOverlay.addEventListener('mouseup', () => {
+            draggingElement = null;
+        });
+        
+        skeletonOverlay.addEventListener('mouseleave', () => {
+            draggingElement = null;
+        });
+
+        // Easing style selection
+        const easingOptions = document.querySelectorAll('.easing-option');
+        const easingCanvas = document.getElementById('easing-canvas');
+        const easingCtx = easingCanvas.getContext('2d');
+
+        let easingAnimationId = null;
+        let currentEasing = 'linear';
+        
+        // Draw initial curve
+        drawEasingCurve('linear');
+
+        function drawEasingCurve(easing) {
+            currentEasing = easing;
+            const width = easingCanvas.width = easingCanvas.offsetWidth;
+            const height = easingCanvas.height = easingCanvas.offsetHeight;
+            const padding = 20;
+            
+            // Cancel any existing animation
+            if (easingAnimationId) {
+                cancelAnimationFrame(easingAnimationId);
+            }
+            
+            easingCtx.clearRect(0, 0, width, height);
+            
+            // Draw grid
+            easingCtx.strokeStyle = '#333';
+            easingCtx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                const x = padding + ((width - padding * 2) / 10) * i;
+                easingCtx.beginPath();
+                easingCtx.moveTo(x, padding);
+                easingCtx.lineTo(x, height - padding);
+                easingCtx.stroke();
+            }
+            for (let i = 0; i <= 10; i++) {
+                const y = padding + ((height - padding * 2) / 10) * i;
+                easingCtx.beginPath();
+                easingCtx.moveTo(padding, y);
+                easingCtx.lineTo(width - padding, y);
+                easingCtx.stroke();
+            }
+            
+            // Draw easing curve
+            easingCtx.strokeStyle = '#0000A3';
+            easingCtx.lineWidth = 3;
+            easingCtx.beginPath();
+            easingCtx.moveTo(padding, height - padding);
+            
+            const points = 100;
+            for (let i = 0; i <= points; i++) {
+                const t = i / points;
+                const x = padding + t * (width - padding * 2);
+                let y = height - padding - (getEasingValue(t, easing) * (height - padding * 2));
+                // Clamp y to prevent clipping
+                y = Math.max(padding, Math.min(height - padding, y));
+                
+                if (i === 0) {
+                    easingCtx.moveTo(x, y);
+                } else {
+                    easingCtx.lineTo(x, y);
+                }
+            }
+            easingCtx.stroke();
+            
+            // Start dot animation
+            animateDot(width, height);
+        }
+
+        function animateDot(width, height) {
+            let startTime = null;
+            const duration = 2000; // 2 seconds to complete
+            const padding = 20;
+            
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                easingCtx.clearRect(0, 0, width, height);
+                
+                // Redraw grid and curve
+                easingCtx.strokeStyle = '#333';
+                easingCtx.lineWidth = 1;
+                for (let i = 0; i <= 10; i++) {
+                    const x = padding + ((width - padding * 2) / 10) * i;
+                    easingCtx.beginPath();
+                    easingCtx.moveTo(x, padding);
+                    easingCtx.lineTo(x, height - padding);
+                    easingCtx.stroke();
+                }
+                for (let i = 0; i <= 10; i++) {
+                    const y = padding + ((height - padding * 2) / 10) * i;
+                    easingCtx.beginPath();
+                    easingCtx.moveTo(padding, y);
+                    easingCtx.lineTo(width - padding, y);
+                    easingCtx.stroke();
+                }
+                
+                easingCtx.strokeStyle = '#0000A3';
+                easingCtx.lineWidth = 3;
+                easingCtx.beginPath();
+                easingCtx.moveTo(padding, height - padding);
+                for (let i = 0; i <= 100; i++) {
+                    const t = i / 100;
+                    const x = padding + t * (width - padding * 2);
+                    const y = height - padding - (getEasingValue(t, currentEasing) * (height - padding * 2));
+                    if (i === 0) {
+                        easingCtx.moveTo(x, y);
+                    } else {
+                        easingCtx.lineTo(x, y);
+                    }
+                }
+                easingCtx.stroke();
+                
+                // Draw dot at current progress
+                const easedProgress = getEasingValue(progress, currentEasing);
+                const dotX = padding + progress * (width - padding * 2);
+                const dotY = height - padding - (easedProgress * (height - padding * 2));
+                
+                easingCtx.fillStyle = '#fff';
+                easingCtx.beginPath();
+                easingCtx.arc(dotX, dotY, 6, 0, Math.PI * 2);
+                easingCtx.fill();
+                
+                // Draw glow
+                easingCtx.fillStyle = 'rgba(0, 0, 163, 0.5)';
+                easingCtx.beginPath();
+                easingCtx.arc(dotX, dotY, 10, 0, Math.PI * 2);
+                easingCtx.fill();
+                
+                if (progress < 1) {
+                    easingAnimationId = requestAnimationFrame(animate);
+                } else {
+                    // Draw final frame before delay
+                    easingCtx.clearRect(0, 0, width, height);
+                    
+                    // Redraw grid and curve
+                    easingCtx.strokeStyle = '#333';
+                    easingCtx.lineWidth = 1;
+                    for (let i = 0; i <= 10; i++) {
+                        const x = padding + ((width - padding * 2) / 10) * i;
+                        easingCtx.beginPath();
+                        easingCtx.moveTo(x, padding);
+                        easingCtx.lineTo(x, height - padding);
+                        easingCtx.stroke();
+                    }
+                    for (let i = 0; i <= 10; i++) {
+                        const y = padding + ((height - padding * 2) / 10) * i;
+                        easingCtx.beginPath();
+                        easingCtx.moveTo(padding, y);
+                        easingCtx.lineTo(width - padding, y);
+                        easingCtx.stroke();
+                    }
+                    
+                    easingCtx.strokeStyle = '#0000A3';
+                    easingCtx.lineWidth = 3;
+                    easingCtx.beginPath();
+                    easingCtx.moveTo(padding, height - padding);
+                    for (let i = 0; i <= 100; i++) {
+                        const t = i / 100;
+                        const x = padding + t * (width - padding * 2);
+                        const y = height - padding - (getEasingValue(t, currentEasing) * (height - padding * 2));
+                        if (i === 0) {
+                            easingCtx.moveTo(x, y);
+                        } else {
+                            easingCtx.lineTo(x, y);
+                        }
+                    }
+                    easingCtx.stroke();
+                    
+                    // Draw final dot
+                    const dotX = padding + (width - padding * 2);
+                    const dotY = height - padding - (getEasingValue(1, currentEasing) * (height - padding * 2));
+                    
+                    easingCtx.fillStyle = '#fff';
+                    easingCtx.beginPath();
+                    easingCtx.arc(dotX, dotY, 6, 0, Math.PI * 2);
+                    easingCtx.fill();
+                    
+                    easingCtx.fillStyle = 'rgba(0, 0, 163, 0.5)';
+                    easingCtx.beginPath();
+                    easingCtx.arc(dotX, dotY, 10, 0, Math.PI * 2);
+                    easingCtx.fill();
+                    
+                    // Loop animation
+                    setTimeout(() => {
+                        animateDot(width, height);
+                    }, 500);
+                }
+            }
+            
+            easingAnimationId = requestAnimationFrame(animate);
+        }
+
+        function getEasingValue(t, easing) {
+            switch (easing) {
+                case 'linear':
+                    return t;
+                case 'easeInSine':
+                    return t === 1 ? 1 : 1 - Math.cos((t * Math.PI) / 2);
+                case 'cubic':
+                    return t === 1 ? 1 : t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                case 'elastic':
+                    const c4 = (2 * Math.PI) / 3;
+                    return t === 0 ? 0 : t === 1 ? 1 : Math.max(0, Math.min(1, Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1));
+                case 'exponential':
+                    return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, 10 * (t - 1));
+                case 'circular':
+                    return t === 1 ? 1 : 1 - Math.sqrt(1 - t * t);
+                case 'bounce':
+                    const n1 = 7.5625;
+                    const d1 = 2.75;
+                    if (t < 1 / d1) {
+                        return n1 * t * t;
+                    } else if (t < 2 / d1) {
+                        return n1 * (t -= 1.5 / d1) * t + 0.75;
+                    } else if (t < 2.5 / d1) {
+                        return n1 * (t -= 2.25 / d1) * t + 0.9375;
+                    } else if (t < 2.625 / d1) {
+                        return n1 * (t -= 2.625 / d1) * t + 0.984375;
+                    } else {
+                        return 1;
+                    }
+                default:
+                    return t;
+            }
+        }
+
+        easingOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Immediately update selection state
+                easingOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                // Cancel any running animation
+                if (easingAnimationId) {
+                    cancelAnimationFrame(easingAnimationId);
+                    easingAnimationId = null;
+                }
+                
+                // Draw the new curve immediately
+                const easing = option.dataset.easing;
+                currentEasing = easing;
+                drawEasingCurve(easing);
+            });
+        });
+
+        // Range slider value displays and fill effect
+        document.querySelectorAll('input[type="range"]').forEach(range => {
+            const valueDisplay = document.getElementById(range.id + '-value');
+            
+            function updateSlider() {
+                if (valueDisplay) {
+                    valueDisplay.value = range.value;
+                }
+                // Update fill effect
+                const min = range.min || 0;
+                const max = range.max || 100;
+                const percent = (range.value - min) / (max - min) * 100;
+                range.style.background = `linear-gradient(to right, #0000A3 ${percent}%, #2a2a2a ${percent}%)`;
+            }
+            
+            range.addEventListener('input', updateSlider);
+            updateSlider(); // Initialize on load
+            
+            // Handle number input changes
+            if (valueDisplay) {
+                valueDisplay.addEventListener('input', () => {
+                    let val = parseInt(valueDisplay.value);
+                    const min = parseInt(range.min) || 0;
+                    const max = parseInt(range.max) || 100;
+                    
+                    // Clamp value to min/max
+                    if (val < min) val = min;
+                    if (val > max) val = max;
+                    if (isNaN(val)) val = min;
+                    
+                    range.value = val;
+                    valueDisplay.value = val;
+                    updateSlider();
+                });
+                
+                valueDisplay.addEventListener('blur', () => {
+                    // Ensure value is within bounds on blur
+                    let val = parseInt(valueDisplay.value);
+                    const min = parseInt(range.min) || 0;
+                    const max = parseInt(range.max) || 100;
+                    
+                    if (val < min || isNaN(val)) {
+                        val = min;
+                    } else if (val > max) {
+                        val = max;
+                    }
+                    
+                    range.value = val;
+                    valueDisplay.value = val;
+                    updateSlider();
+                });
+            }
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('search-input');
+        const controlRows = document.querySelectorAll('.control-row');
+        const sectionBoxes = document.querySelectorAll('.section-box');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            
+            controlRows.forEach(row => {
+                const labelText = row.querySelector('label')?.textContent.toLowerCase() || '';
+                const keybindText = row.querySelector('.keybind')?.textContent.toLowerCase() || '';
+                const matches = labelText.includes(query) || keybindText.includes(query);
+                
+                if (query === '' || matches) {
+                    row.style.display = 'flex';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Hide empty section boxes
+            sectionBoxes.forEach(box => {
+                const visibleRows = box.querySelectorAll('.control-row[style="display: flex;"], .control-row:not([style])');
+                if (visibleRows.length === 0 && query !== '') {
+                    box.style.display = 'none';
+                } else {
+                    box.style.display = 'block';
+                }
+            });
+        });
+
+        // Keybind functionality
+        const keybindBox = document.getElementById('aimbot-keybind');
+        let isRecording = false;
+
+        keybindBox.addEventListener('click', (e) => {
+            if (!isRecording) {
+                isRecording = true;
+                keybindBox.textContent = '';
+                keybindBox.classList.add('recording');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (isRecording) {
+                // Escape cancels recording
+                if (e.key === 'Escape') {
+                    isRecording = false;
+                    keybindBox.textContent = 'Click to set';
+                    keybindBox.classList.remove('recording');
+                    return;
+                }
+                
+                e.preventDefault();
+                isRecording = false;
+                
+                let keyName = e.key;
+                if (keyName === ' ') keyName = 'Space';
+                if (keyName === 'Control') keyName = 'Ctrl';
+                if (keyName === 'Alt') keyName = 'Alt';
+                if (keyName === 'Shift') keyName = 'Shift';
+                if (keyName === 'Meta') keyName = 'Win';
+                
+                keybindBox.textContent = keyName;
+                keybindBox.classList.remove('recording');
+            }
+        });
+
+        document.addEventListener('mousedown', (e) => {
+            if (isRecording && e.target !== keybindBox) {
+                e.preventDefault();
+                isRecording = false;
+                
+                let buttonName = '';
+                switch (e.button) {
+                    case 0: buttonName = 'Mouse1'; break;
+                    case 1: buttonName = 'Mouse3'; break;
+                    case 2: buttonName = 'Mouse2'; break;
+                    case 3: buttonName = 'Mouse4'; break;
+                    case 4: buttonName = 'Mouse5'; break;
+                    default: buttonName = 'Mouse' + (e.button + 1);
+                }
+                
+                keybindBox.textContent = buttonName;
+                keybindBox.classList.remove('recording');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (isRecording && e.target !== keybindBox) {
+                isRecording = false;
+                keybindBox.textContent = 'Click to set';
+                keybindBox.classList.remove('recording');
+            }
+        });
+
+        // Triggerbot keybind functionality
+        const triggerbotKeybindBox = document.getElementById('triggerbot-keybind');
+        let isRecordingTriggerbot = false;
+
+        triggerbotKeybindBox.addEventListener('click', (e) => {
+            if (!isRecordingTriggerbot) {
+                isRecordingTriggerbot = true;
+                triggerbotKeybindBox.textContent = '';
+                triggerbotKeybindBox.classList.add('recording');
+            }
+        });
+
+        triggerbotKeybindBox.addEventListener('mousedown', (e) => {
+            if (isRecordingTriggerbot) {
+                e.preventDefault();
+                isRecordingTriggerbot = false;
+                
+                let buttonName = '';
+                switch (e.button) {
+                    case 0: buttonName = 'Mouse1'; break;
+                    case 1: buttonName = 'Mouse3'; break;
+                    case 2: buttonName = 'Mouse2'; break;
+                    case 3: buttonName = 'Mouse4'; break;
+                    case 4: buttonName = 'Mouse5'; break;
+                    default: buttonName = 'Mouse' + (e.button + 1);
+                }
+                
+                triggerbotKeybindBox.textContent = buttonName;
+                triggerbotKeybindBox.classList.remove('recording');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (isRecordingTriggerbot) {
+                if (e.key === 'Escape') {
+                    isRecordingTriggerbot = false;
+                    triggerbotKeybindBox.textContent = 'Click to set';
+                    triggerbotKeybindBox.classList.remove('recording');
+                    return;
+                }
+                
+                e.preventDefault();
+                isRecordingTriggerbot = false;
+                
+                let keyName = e.key;
+                if (keyName === ' ') keyName = 'Space';
+                if (keyName === 'Control') keyName = 'Ctrl';
+                if (keyName === 'Alt') keyName = 'Alt';
+                if (keyName === 'Shift') keyName = 'Shift';
+                if (keyName === 'Meta') keyName = 'Win';
+                
+                triggerbotKeybindBox.textContent = keyName;
+                triggerbotKeybindBox.classList.remove('recording');
+            }
+        });
+
+        document.addEventListener('mousedown', (e) => {
+            if (isRecordingTriggerbot && e.target !== triggerbotKeybindBox) {
+                e.preventDefault();
+                isRecordingTriggerbot = false;
+                
+                let buttonName = '';
+                switch (e.button) {
+                    case 0: buttonName = 'Mouse1'; break;
+                    case 1: buttonName = 'Mouse3'; break;
+                    case 2: buttonName = 'Mouse2'; break;
+                    case 3: buttonName = 'Mouse4'; break;
+                    case 4: buttonName = 'Mouse5'; break;
+                    default: buttonName = 'Mouse' + (e.button + 1);
+                }
+                
+                triggerbotKeybindBox.textContent = buttonName;
+                triggerbotKeybindBox.classList.remove('recording');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (isRecordingTriggerbot && e.target !== triggerbotKeybindBox) {
+                isRecordingTriggerbot = false;
+                triggerbotKeybindBox.textContent = 'Click to set';
+                triggerbotKeybindBox.classList.remove('recording');
+            }
+        });
+    </script>
+</body>
+</html>

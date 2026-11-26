@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narcotic - Sign Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #121519;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 320px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+            animation: slideDown 0.6s ease-out 0.1s both;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: #1a1a1a;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 2px solid #333;
+            animation: slideIn 0.5s ease-out both;
+        }
+        .input-group:nth-child(4) { animation-delay: 0.1s; }
+        .input-group:nth-child(5) { animation-delay: 0.2s; }
+        .input-group:nth-child(6) { animation-delay: 0.3s; }
+        .input-icon {
+            width: 42px;
+            height: 36px;
+            background: #0000A3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 10px;
+            margin: 4px;
+        }
+        .input-icon i {
+            font-size: 16px;
+            color: #fff;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 10px 12px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+        .input-group input:focus {
+            outline: none;
+        }
+        .input-group input::placeholder {
+            color: #666;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #0000A3;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 6px;
+            animation: slideIn 0.5s ease-out 0.4s both;
+        }
+        .btn:hover {
+            background: #000086;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 163, 0.3);
+        }
+        .link {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .link a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .link a:hover { text-decoration: underline; }
+        .message {
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+        }
+        .message.show { display: block; }
+        .error {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+        .success {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NARCOTIC</h1>
+        <div class="message error" id="error"></div>
+        <div class="message success" id="success"></div>
+        <form id="signup-form" novalidate>
+            <div class="input-group">
+                <div class="input-icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <input type="text" id="username" placeholder="Username" autocomplete="username">
+            </div>
+            <div class="input-group">
+                <div class="input-icon">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <input type="password" id="password" placeholder="Password" autocomplete="new-password">
+            </div>
+            <div class="input-group">
+                <div class="input-icon">
+                    <i class="fa-solid fa-key"></i>
+                </div>
+                <input type="text" id="license" placeholder="License Key">
+            </div>
+            <button type="submit" class="btn">REGISTER</button>
+        </form>
+        <div class="link">
+            Already have an account? <a href="login.html">Sign in</a>
+        </div>
+    </div>
+    <script>
+        const error = document.getElementById('error');
+        const success = document.getElementById('success');
+
+        function hideMessages() {
+            error.classList.remove('show');
+            success.classList.remove('show');
+        }
+
+        function showError(msg) {
+            error.textContent = msg;
+            error.classList.add('show');
+            success.classList.remove('show');
+        }
+
+        function showSuccess(msg) {
+            success.textContent = msg;
+            success.classList.add('show');
+            error.classList.remove('show');
+        }
+
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessages();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const license = document.getElementById('license').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, license })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    showSuccess('Account created! Redirecting to login...');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                } else {
+                    showError(data.error || 'Sign up failed');
+                }
+            } catch (err) {
+                showError('Connection error. Is the server running?');
+            }
+        });
+    </script>
+</body>
+</html>
