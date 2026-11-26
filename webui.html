@@ -1091,6 +1091,21 @@
         </div>
     </div>
     <script>
+        // API functions to communicate with local cheat
+        async function callAPI(endpoint, data) {
+            try {
+                const response = await fetch(`http://localhost:8080${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('API call failed:', error);
+                return { success: false };
+            }
+        }
+
         const menuItems = document.querySelectorAll('.menu-item');
         const tabContents = document.querySelectorAll('.tab-content');
 
@@ -1102,6 +1117,28 @@
                 document.getElementById(item.dataset.tab).classList.add('active');
             });
         });
+
+        // Connect toggles to API
+        const aimbotEnabled = document.getElementById('aimbot-enabled');
+        if (aimbotEnabled) {
+            aimbotEnabled.addEventListener('change', async (e) => {
+                await callAPI('/api/aimbot/enabled', { enabled: e.target.checked });
+            });
+        }
+
+        const triggerbotEnabled = document.getElementById('triggerbot-enabled');
+        if (triggerbotEnabled) {
+            triggerbotEnabled.addEventListener('change', async (e) => {
+                await callAPI('/api/triggerbot/enabled', { enabled: e.target.checked });
+            });
+        }
+
+        const espEnabled = document.getElementById('esp-enabled');
+        if (espEnabled) {
+            espEnabled.addEventListener('change', async (e) => {
+                await callAPI('/api/esp/enabled', { enabled: e.target.checked });
+            });
+        }
 
         // Triggerbot preview
         const triggerbotCanvas = document.getElementById('triggerbot-canvas');
