@@ -1091,24 +1091,10 @@
         </div>
     </div>
     <script>
-        // Get local IP
-        async function getLocalIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            } catch (err) {
-                return 'localhost';
-            }
-        }
-
-        let localIP = 'localhost';
-        getLocalIP().then(ip => localIP = ip);
-
         // Verify with server on load - no localStorage persistence
         async function verifyWithServer() {
             try {
-                const response = await fetch(`http://${localIP}:8080/api/verify`, {
+                const response = await fetch('http://localhost:8080/api/verify', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({})
@@ -1125,7 +1111,7 @@
         // API functions to communicate with local cheat
         async function callAPI(endpoint, data) {
             try {
-                const response = await fetch(`http://${localIP}:8080${endpoint}`, {
+                const response = await fetch(`http://localhost:8080${endpoint}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)

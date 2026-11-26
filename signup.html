@@ -169,28 +169,10 @@
         <div class="link">
             Already have an account? <a href="login.html">Sign in</a>
         </div>
-        <div class="link" style="margin-top: 12px;">
-            Your local IP: <span id="local-ip" style="color: #00aaff; font-weight: 600;">Loading...</span>
-        </div>
     </div>
     <script>
         const error = document.getElementById('error');
         const success = document.getElementById('success');
-        const localIpSpan = document.getElementById('local-ip');
-
-        // Get local IP
-        async function getLocalIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                localIpSpan.textContent = data.ip;
-                localStorage.setItem('narcotic_ip', data.ip);
-            } catch (err) {
-                localIpSpan.textContent = 'Failed to detect';
-            }
-        }
-
-        getLocalIP();
 
         function hideMessages() {
             error.classList.remove('show');
@@ -215,10 +197,9 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const license = document.getElementById('license').value;
-            const ip = localStorage.getItem('narcotic_ip') || 'localhost';
 
             try {
-                const response = await fetch(`http://${ip}:8080/api/signup`, {
+                const response = await fetch('http://localhost:8080/api/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password, license })
@@ -233,7 +214,7 @@
                     showError(data.error || 'Sign up failed');
                 }
             } catch (err) {
-                showError('Connection error. Make sure the cheat is running and you are connected to the internet.');
+                showError('Connection error. Make sure the cheat is running.');
             }
         });
     </script>
