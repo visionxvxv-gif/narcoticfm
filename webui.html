@@ -1091,10 +1091,41 @@
         </div>
     </div>
     <script>
+        // Get local IP
+        async function getLocalIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (err) {
+                return 'localhost';
+            }
+        }
+
+        let localIP = 'localhost';
+        getLocalIP().then(ip => localIP = ip);
+
+        // Verify with server on load - no localStorage persistence
+        async function verifyWithServer() {
+            try {
+                const response = await fetch(`http://${localIP}:8080/api/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+                const data = await response.json();
+                if (!data.success) {
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                window.location.href = 'login.html';
+            }
+        }
+
         // API functions to communicate with local cheat
         async function callAPI(endpoint, data) {
             try {
-                const response = await fetch(`http://localhost:8080${endpoint}`, {
+                const response = await fetch(`http://${localIP}:8080${endpoint}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -1105,6 +1136,9 @@
                 return { success: false };
             }
         }
+
+        // Check authentication on page load
+        verifyWithServer();
 
         const menuItems = document.querySelectorAll('.menu-item');
         const tabContents = document.querySelectorAll('.tab-content');
